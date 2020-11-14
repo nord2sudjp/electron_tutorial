@@ -7,6 +7,7 @@ const isDev = process.env.NODE_ENV !== "production" ? true : false;
 const isMac = process.platform === "darwin" ? true : false;
 
 let mainWindow;
+let aboutWindow;
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
@@ -21,12 +22,27 @@ function createMainWindow() {
   // mainWindow.loadURL("https://www.google.com")
   mainWindow.loadURL(`file://${__dirname}/app/index.html`);
 }
+
+function createAboutWindow() {
+  mainWindow = new BrowserWindow({
+    title: "ImageShrink",
+    width: 300,
+    height: 300,
+    icon: "./assets/icons/Icon_256x256.png",
+    resizable: isDev ? true : false,
+    backgroundColor: "white",
+  });
+
+  // mainWindow.loadURL("https://www.google.com")
+  mainWindow.loadFile("./app/about.html");
+}
+
 app.on("ready", () => {
   createMainWindow();
   const mainMenu = Menu.buildFromTemplate(menu);
   Menu.setApplicationMenu(mainMenu);
-  globalShortcut.register("CmdOrCtrl+R", () => mainWindow.reload());
-  globalShortcut.register("Ctrl+Shift+I", () => mainWindow.toggleDevTools());
+  //globalShortcut.register("CmdOrCtrl+R", () => mainWindow.reload());
+  //globalShortcut.register("Ctrl+Shift+I", () => mainWindow.toggleDevTools());
 
   mainWindow.on("ready", () => {
     mainWindow = null;
@@ -36,6 +52,7 @@ const menu = [
   {
     role: "fileMenu",
   },
+  { label: "Help", submenu: [{ label: "About", click: createAboutWindow }] },
   ...(isDev
     ? [
         {
