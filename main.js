@@ -34,15 +34,21 @@ app.on("ready", () => {
 });
 const menu = [
   {
-    label: "File",
-    submenu: [
-      {
-        label: "Quit",
-        accelerator: "CmdOrCtrl+W",
-        click: () => app.quit(),
-      },
-    ],
+    role: "fileMenu",
   },
+  ...(isDev
+    ? [
+        {
+          label: "Developer",
+          submenu: [
+            { role: "reload" },
+            { role: "forcereload" },
+            { role: "separator" },
+            { role: "toggledevtools" },
+          ],
+        },
+      ]
+    : []),
 ];
 
 app.on("window-all-closed", () => {
