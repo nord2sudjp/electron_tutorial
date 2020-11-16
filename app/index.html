@@ -74,6 +74,14 @@
 
         ipcRenderer.send("image:minimize", { imgPath, quality });
       });
+
+      ipcRenderer.on("image:done", () => {
+        M.toast({ html: `Image resized to ${slider.value}% quality` });
+      });
+
+      ipcRenderer.on("image:err", () => {
+        M.toast({ html: `Something goes wrong` });
+      });
     </script>
   </body>
 </html>
